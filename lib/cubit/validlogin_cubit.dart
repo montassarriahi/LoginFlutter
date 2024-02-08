@@ -36,7 +36,8 @@ class ValidloginCubit extends Cubit<ValidloginState> {
         isValidEmail(Email) &&
         Passcontrole(Password)) {
       emit(Validlogins(Email: Email, Password: Password));
-    } else {
+    } else  {
+      
       emit(loginFailure(Email: Email, Password: Password));
     }
   }

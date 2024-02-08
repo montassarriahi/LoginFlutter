@@ -16,9 +16,13 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => ValidloginCubit(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         home: LoginPage(),
       ),
     );
+     
+    
+    
   }
 }
