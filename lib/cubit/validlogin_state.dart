@@ -9,14 +9,18 @@ class Validlogins extends ValidloginState {
   final String Email;
   final String Password;
 
-  Validlogins({required this.Email, required this.Password});
-
+  Validlogins({
+    required this.Email,
+    required this.Password,
+  });
 }
 
-class loginFailure extends ValidloginState{
-    final String Email;
+class loginFailure extends ValidloginState {
+  final String Email;
   final String Password;
 
-  loginFailure({required this.Email, required this.Password});
+  loginFailure({
+    required this.Email,
+    required this.Password,
+  });
 }
-

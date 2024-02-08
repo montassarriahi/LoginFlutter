@@ -35,10 +35,15 @@ class ValidloginCubit extends Cubit<ValidloginState> {
         formKey.currentState!.validate() &&
         isValidEmail(Email) &&
         Passcontrole(Password)) {
-      emit(Validlogins(Email: Email, Password: Password));
-    } else  {
-      
-      emit(loginFailure(Email: Email, Password: Password));
+      emit(Validlogins(
+        Email: Email,
+        Password: Password,
+      ));
+    } else {
+      emit(loginFailure(
+        Email: Email,
+        Password: Password,
+      ));
     }
   }
 }

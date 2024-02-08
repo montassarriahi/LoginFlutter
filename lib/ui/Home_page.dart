@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logincubit/cubit/validlogin_cubit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logincubit/ui/signup.dart';
 import 'package:logincubit/ui/validationCode.dart';
 
 class LoginPage extends StatefulWidget {
@@ -23,142 +24,176 @@ class _LoginPageState extends State<LoginPage> {
           'Login Page',
           style: TextStyle(color: Colors.white),
         ),
+        
         backgroundColor: Color.fromRGBO(7, 48, 100, 1),
       ),
-      body: Form(
-        key: context.read<ValidloginCubit>().formKey,
-        child: BlocConsumer<ValidloginCubit, ValidloginState>(
-          listener: (context, state) {
-            if (state is Validlogins) {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => validationCode()));
+      body: SingleChildScrollView(
+        child: Form(
+          key: context.read<ValidloginCubit>().formKey,
+          child: BlocConsumer<ValidloginCubit, ValidloginState>(
+            listener: (context, state) {
+              if (state is Validlogins) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => validationCode()));
 
-              // ScaffoldMessenger.of(context).showSnackBar(
-              //   SnackBar(
-              //     content: Text(
-              //         'Your email is ${state.Email} and you password is ${state.Password}'),
-              //     backgroundColor: Colors.green,
-              //   ),
-              // );
-            } else {
-              return null;
-              // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              //   content: Text("please fill the input"),
-              //   backgroundColor: Colors.red,
-              // ),
-              // );
-            }
-          },
-          builder: (context, state) {
-            return Center(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    SizedBox(height: 50),
-                    Text(
-                      "Login To Your Account",
-                      style: GoogleFonts.poppins(
-                        color: Color.fromRGBO(7, 48, 100, 1),
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   SnackBar(
+                //     content: Text(
+                //         'Your email is ${state.Email} and you password is ${state.Password}'),
+                //     backgroundColor: Colors.green,
+                //   ),
+                // );
+              } else {
+                return null;
+                // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                //   content: Text("please fill the input"),
+                //   backgroundColor: Colors.red,
+                // ),
+                // );
+              }
+            },
+            builder: (context, state) {
+              return Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 50),
+                      Text(
+                        "Login To Your Account",
+                        style: GoogleFonts.poppins(
+                          color: Color.fromRGBO(7, 48, 100, 1),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          "Great to see you, enter your details below to continue ",
-                          style: GoogleFonts.poppins(
-                            color: Color.fromRGBO(7, 48, 100, 1),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
+                      Column(
+                        children: [
+                          Text(
+                            "Great to see you, enter your details below to continue ",
+                            style: GoogleFonts.poppins(
+                              color: Color.fromRGBO(7, 48, 100, 1),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
 
-                    SizedBox(height: 50),
-                    // Email Input Field
-                    TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please Enter Your Email";
-                        } else if (isValidEmail(value)) {
+                      SizedBox(height: 50),
+                      // Email Input Field
+                      TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please Enter Your Email";
+                          } else if (isValidEmail(value)) {
+                            return null;
+                          } else {
+                            return "please enter a valid email adress";
+                          }
+                        },
+                        keyboardType: TextInputType.emailAddress,
+                        // this is controler
+                        controller: EmailController,
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+
+                      SizedBox(height: 16),
+
+                      // Password Input Field
+                      TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please Enter Your Password";
+                          } else if (value.length < 6) {
+                            return "Password must be at least 6 characters";
+                          }
                           return null;
-                        } else {
-                          return "please enter a valid email adress";
-                        }
-                      },
-                      keyboardType: TextInputType.emailAddress,
-                      // this is controler
-                      controller: EmailController,
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-
-                    SizedBox(height: 16),
-
-                    // Password Input Field
-                    TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please Enter Your Password";
-                        } else if (value.length < 6) {
-                          return "Password must be at least 6 characters";
-                        }
-                        return null;
-                      },
-                      controller: PasswordController,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        border: OutlineInputBorder(),
-                      ),
-                      obscureText: true,
-                    ),
-
-                    SizedBox(height: 24),
-
-                    // Login Button
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        padding: MaterialStatePropertyAll(
-                            EdgeInsets.symmetric(horizontal: 100)),
-                        backgroundColor: MaterialStatePropertyAll(
-                          Color.fromRGBO(7, 48, 100, 1),
+                        },
+                        controller: PasswordController,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          border: OutlineInputBorder(),
                         ),
-                        foregroundColor: MaterialStatePropertyAll(Colors.white),
-                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5))),
+                        obscureText: true,
                       ),
-                      onPressed: () {
-                        String email = EmailController.text;
-                        String password = PasswordController.text;
-                        context
-                            .read<ValidloginCubit>()
-                            .Information(email, password);
 
-                        // if (state is Validlogins) {
-                        //   Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //           builder: (context) => validationCode()));
-                        // }
+                      SizedBox(height: 24),
 
-                        // context.read<ValidloginCubit>().formKey.currentState!.validate();
-                        // context.read<ValidloginCubit>().Information(
-                        //     EmailController.text, PasswordController.text);
-                      },
-                      child: Text(
-                        'Login',
+                      // Login Button
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          padding: MaterialStatePropertyAll(
+                              EdgeInsets.symmetric(horizontal: 100)),
+                          backgroundColor: MaterialStatePropertyAll(
+                            Color.fromRGBO(7, 48, 100, 1),
+                          ),
+                          foregroundColor:
+                              MaterialStatePropertyAll(Colors.white),
+                          shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5))),
+                        ),
+                        onPressed: () {
+                          String email = EmailController.text;
+                          String password = PasswordController.text;
+                          context
+                              .read<ValidloginCubit>()
+                              .Information(email, password);
+
+                          // if (state is Validlogins) {
+                          //   Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           builder: (context) => validationCode()));
+                          // }
+
+                          // context.read<ValidloginCubit>().formKey.currentState!.validate();
+                          // context.read<ValidloginCubit>().Information(
+                          //     EmailController.text, PasswordController.text);
+                        },
+                        child: Text(
+                          'Login',
+                        ),
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Already have an account ?",
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUp()));
+                            },
+                            child: Text(
+                              "Sign up",
+                              style: GoogleFonts.poppins(
+                                  color: Color.fromRGBO(7, 48, 100, 1),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
